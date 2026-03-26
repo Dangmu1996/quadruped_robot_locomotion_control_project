@@ -109,7 +109,7 @@ class Anymal_runner(object):
         else:
             self._anymal.forward(step_size, self._base_command)
             self.print_count_ += 1
-            if self.print_count_ % 30 == 0:
+            if self.print_count_ % 60 == 0:
                 self.printRobotState()
 
     def printRobotState(self):
