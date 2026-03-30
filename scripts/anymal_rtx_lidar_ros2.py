@@ -88,9 +88,9 @@ class Anymal_runner(object):
         self.needs_reset = False
         self.first_step = True
 
-        # for lidar prim
+        # for lidar prim (match URDF chain: base -> lidar_cage -> lidar)
         self.lidar_parent = "/World/Anymal/base"
-        self.lidar_name = "front_lidar"
+        self.lidar_name = "lidar_frame"
         self.hydra_texture = None
 
     def setup(self) -> None:
@@ -112,8 +112,8 @@ class Anymal_runner(object):
             path=self.lidar_name,
             parent=self.lidar_parent,
             config="Example_Rotary",
-            translation=(0.35, 0.0, 0.25),  # base 기준 앞쪽/위쪽
-            orientation=Gf.Quatd(1.0, 0.0, 0.0, 0.0),
+            translation=(0.35, 0.0, 0.2),  # match URDF lidar_cage_to_lidar
+            orientation=Gf.Quatd(1, 0.0, 0.0, 0.0),  # yaw -pi/2
         )
 
         self.hydra_texture = rep.create.render_product(sensor.GetPath(), [1, 1], name="Isaac")
@@ -122,7 +122,7 @@ class Anymal_runner(object):
         writer = rep.writers.get("RtxLidarROS2PublishPointCloud")
         writer.initialize(
             topicName="point_cloud",
-            frameId="front_lidar"
+            frameId="lidar_frame"
         )
         writer.attach([self.hydra_texture])
 
