@@ -25,7 +25,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             "use_sim_time",
-            default_value="false",
+            default_value="true",
             description="Use simulation clock if available",
         ),
         DeclareLaunchArgument(
@@ -51,12 +51,14 @@ def generate_launch_description():
             arguments=["0.35", "0", "0.2", "0", "0", "0", "base", "lidar_frame"],
         ),
         Node(
-            package="joint_state_publisher_gui",
-            executable="joint_state_publisher_gui",
-            name="joint_state_publisher_gui",
+            package="anymal_description",
+            executable="odom_to_tf_broadcaster",
+            name="odom_to_tf_broadcaster",
             output="screen",
             parameters=[{
-                "use_sim_time": use_sim_time,
+                "odom_topic": "/odom",
+                "odom_frame_id": "odom",
+                "base_frame_id": "base",
             }],
         ),
         Node(
